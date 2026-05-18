@@ -18,26 +18,28 @@ export function Sidebar() {
   const { user, logout } = useAuth();
 
   return (
-    <aside className="w-64 bg-gray-900 text-white flex flex-col h-screen sticky top-0">
-      <div className="p-6 border-b border-gray-700">
-        <h1 className="text-xl font-bold text-indigo-400">SubscManager</h1>
-        <p className="text-xs text-gray-400 mt-1">サブスク管理アプリ</p>
+    <aside className="w-56 bg-black text-white flex flex-col h-screen sticky top-0 shrink-0">
+      <div className="px-6 py-7 border-b border-white/10">
+        <div className="flex items-center gap-2.5">
+          <div className="w-6 h-6 bg-white rounded-md" />
+          <span className="text-sm font-semibold tracking-wide">SubscManager</span>
+        </div>
       </div>
 
-      <nav className="flex-1 p-4 space-y-1">
+      <nav className="flex-1 px-3 py-4 space-y-0.5">
         {navItems.map(({ href, label, icon: Icon }) => {
           const active = pathname === href;
           return (
             <Link
               key={href}
               href={href}
-              className={`flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-colors ${
+              className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-colors ${
                 active
-                  ? 'bg-indigo-600 text-white'
-                  : 'text-gray-300 hover:bg-gray-800 hover:text-white'
+                  ? 'bg-white text-black font-medium'
+                  : 'text-zinc-400 hover:bg-white/8 hover:text-white'
               }`}
             >
-              <Icon size={18} />
+              <Icon size={16} strokeWidth={active ? 2.5 : 2} />
               {label}
             </Link>
           );
@@ -45,19 +47,22 @@ export function Sidebar() {
       </nav>
 
       {user && (
-        <div className="p-4 border-t border-gray-700">
-          <div className="flex items-center gap-3 mb-3">
-            {user.photoURL && (
-              <img src={user.photoURL} alt="" className="w-8 h-8 rounded-full" />
+        <div className="px-3 py-4 border-t border-white/10">
+          <div className="flex items-center gap-2.5 px-3 mb-2">
+            {user.photoURL ? (
+              <img src={user.photoURL} alt="" className="w-7 h-7 rounded-full" />
+            ) : (
+              <div className="w-7 h-7 rounded-full bg-zinc-700 flex items-center justify-center text-xs">
+                {user.displayName?.charAt(0)}
+              </div>
             )}
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium truncate">{user.displayName}</p>
-              <p className="text-xs text-gray-400 truncate">{user.email}</p>
+              <p className="text-xs font-medium truncate text-white">{user.displayName}</p>
             </div>
           </div>
           <button
             onClick={logout}
-            className="flex items-center gap-2 w-full px-3 py-2 text-sm text-gray-300 hover:bg-gray-800 hover:text-white rounded-lg transition-colors"
+            className="flex items-center gap-3 w-full px-3 py-2.5 text-sm text-zinc-400 hover:bg-white/8 hover:text-white rounded-lg transition-colors"
           >
             <LogOut size={16} />
             ログアウト

@@ -5,16 +5,8 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useSubscriptions } from '@/hooks/useSubscriptions';
 import { Subscription } from '@/lib/types';
 import {
-  startOfMonth,
-  endOfMonth,
-  startOfWeek,
-  endOfWeek,
-  eachDayOfInterval,
-  isSameMonth,
-  isSameDay,
-  format,
-  addMonths,
-  subMonths,
+  startOfMonth, endOfMonth, startOfWeek, endOfWeek,
+  eachDayOfInterval, isSameMonth, isSameDay, format, addMonths, subMonths,
 } from 'date-fns';
 import { ja } from 'date-fns/locale';
 
@@ -33,12 +25,8 @@ export default function CalendarPage() {
   const getEventsForDay = (day: Date) => {
     const events: { sub: Subscription; type: 'renewal' | 'start' }[] = [];
     for (const sub of subscriptions) {
-      if (isSameDay(new Date(sub.renewalDate), day)) {
-        events.push({ sub, type: 'renewal' });
-      }
-      if (isSameDay(new Date(sub.startDate), day)) {
-        events.push({ sub, type: 'start' });
-      }
+      if (isSameDay(new Date(sub.renewalDate), day)) events.push({ sub, type: 'renewal' });
+      if (isSameDay(new Date(sub.startDate), day)) events.push({ sub, type: 'start' });
     }
     return events;
   };
@@ -46,51 +34,42 @@ export default function CalendarPage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-full">
-        <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-indigo-600" />
+        <div className="w-5 h-5 border-2 border-black border-t-transparent rounded-full animate-spin" />
       </div>
     );
   }
 
   return (
-    <div className="p-8">
-      <div className="flex items-center justify-between mb-6">
+    <div className="p-8 max-w-5xl mx-auto">
+      <div className="flex items-center justify-between mb-8">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">カレンダー</h1>
-          <p className="text-gray-500 mt-1">更新日・開始日を確認</p>
+          <h1 className="text-2xl font-bold text-black tracking-tight">カレンダー</h1>
+          <p className="text-zinc-400 text-sm mt-1">更新日・開始日を確認</p>
         </div>
-        <div className="flex items-center gap-3">
-          <div className="flex items-center gap-2 text-xs text-gray-500">
-            <span className="inline-block w-3 h-3 rounded-full bg-blue-500" />更新日
-            <span className="inline-block w-3 h-3 rounded-full bg-emerald-500 ml-2" />開始日
-          </div>
+        <div className="flex items-center gap-3 text-xs text-zinc-400">
+          <span className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-black inline-block" />更新日</span>
+          <span className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-zinc-400 inline-block" />開始日</span>
         </div>
       </div>
 
-      <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden">
-        <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
-          <button
-            onClick={() => setCurrentMonth((m) => subMonths(m, 1))}
-            className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
-          >
-            <ChevronLeft size={20} />
+      <div className="bg-white border border-zinc-200 rounded-2xl overflow-hidden">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-zinc-100">
+          <button onClick={() => setCurrentMonth((m) => subMonths(m, 1))}
+            className="p-2 hover:bg-zinc-100 rounded-lg transition-colors">
+            <ChevronLeft size={18} className="text-zinc-500" />
           </button>
-          <h2 className="text-lg font-semibold text-gray-900">
-            {format(currentMonth, 'yyyy年M月', { locale: ja })}
+          <h2 className="text-sm font-semibold text-black">
+            {format(currentMonth, 'yyyy年 M月', { locale: ja })}
           </h2>
-          <button
-            onClick={() => setCurrentMonth((m) => addMonths(m, 1))}
-            className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
-          >
-            <ChevronRight size={20} />
+          <button onClick={() => setCurrentMonth((m) => addMonths(m, 1))}
+            className="p-2 hover:bg-zinc-100 rounded-lg transition-colors">
+            <ChevronRight size={18} className="text-zinc-500" />
           </button>
         </div>
 
         <div className="grid grid-cols-7">
           {WEEKDAYS.map((d, i) => (
-            <div
-              key={d}
-              className={`text-center text-xs font-medium py-3 ${i === 0 ? 'text-red-500' : i === 6 ? 'text-blue-500' : 'text-gray-500'}`}
-            >
+            <div key={d} className={`text-center text-xs font-medium py-3 ${i === 0 ? 'text-zinc-400' : i === 6 ? 'text-zinc-400' : 'text-zinc-400'}`}>
               {d}
             </div>
           ))}
@@ -99,29 +78,22 @@ export default function CalendarPage() {
             const isCurrentMonth = isSameMonth(day, currentMonth);
             const isToday = isSameDay(day, new Date());
             return (
-              <div
-                key={idx}
-                className={`min-h-[90px] p-1.5 border-t border-gray-100 ${!isCurrentMonth ? 'bg-gray-50' : ''}`}
-              >
-                <div className={`text-xs font-medium w-6 h-6 flex items-center justify-center rounded-full mx-auto mb-1 ${isToday ? 'bg-indigo-600 text-white' : isCurrentMonth ? 'text-gray-700' : 'text-gray-300'}`}>
+              <div key={idx} className={`min-h-[88px] p-1.5 border-t border-zinc-100 ${!isCurrentMonth ? 'bg-zinc-50/50' : ''}`}>
+                <div className={`text-xs w-6 h-6 flex items-center justify-center rounded-full mx-auto mb-1 font-medium ${
+                  isToday ? 'bg-black text-white' : isCurrentMonth ? 'text-zinc-700' : 'text-zinc-300'
+                }`}>
                   {format(day, 'd')}
                 </div>
                 <div className="space-y-0.5">
                   {events.slice(0, 3).map((ev, i) => (
-                    <div
-                      key={i}
-                      className={`flex items-center gap-1 px-1 py-0.5 rounded text-xs truncate ${ev.type === 'renewal' ? 'bg-blue-100 text-blue-700' : 'bg-emerald-100 text-emerald-700'}`}
-                    >
-                      <span
-                        className="w-2 h-2 rounded-full flex-shrink-0"
-                        style={{ backgroundColor: ev.sub.color }}
-                      />
+                    <div key={i} className={`flex items-center gap-1 px-1 py-0.5 rounded text-xs truncate ${
+                      ev.type === 'renewal' ? 'bg-black text-white' : 'bg-zinc-100 text-zinc-600'
+                    }`}>
+                      <span className="w-1.5 h-1.5 rounded-full shrink-0" style={{ backgroundColor: ev.sub.color }} />
                       <span className="truncate">{ev.sub.name}</span>
                     </div>
                   ))}
-                  {events.length > 3 && (
-                    <p className="text-xs text-gray-400 px-1">+{events.length - 3}</p>
-                  )}
+                  {events.length > 3 && <p className="text-xs text-zinc-400 px-1">+{events.length - 3}</p>}
                 </div>
               </div>
             );

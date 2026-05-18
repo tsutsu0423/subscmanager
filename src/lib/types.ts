@@ -31,7 +31,6 @@ export interface Subscription {
   currency: Currency;
   category: Category;
   billingCycle: BillingCycle;
-  billingDay: number;
   startDate: string;
   renewalDate: string;
   color: string;
