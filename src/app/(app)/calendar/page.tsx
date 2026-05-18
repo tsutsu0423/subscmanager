@@ -25,8 +25,29 @@ export default function CalendarPage() {
   const getEventsForDay = (day: Date) => {
     const events: { sub: Subscription; type: 'renewal' | 'start' }[] = [];
     for (const sub of subscriptions) {
-      if (isSameDay(new Date(sub.renewalDate), day)) events.push({ sub, type: 'renewal' });
-      if (isSameDay(new Date(sub.startDate), day)) events.push({ sub, type: 'start' });
+      const start = new Date(sub.startDate);
+
+      // 開始日はそのままの日付のみ表示
+      if (isSameDay(start, day)) {
+        events.push({ sub, type: 'start' });
+        continue;
+      }
+
+      // 開始日より前の日は無視
+      if (day < start) continue;
+
+      // 月払い: 毎月同じ日に更新
+      if (sub.billingCycle === 'monthly') {
+        if (day.getDate() === start.getDate()) {
+          events.push({ sub, type: 'renewal' });
+        }
+      }
+      // 年払い: 毎年同じ月日に更新
+      if (sub.billingCycle === 'yearly') {
+        if (day.getMonth() === start.getMonth() && day.getDate() === start.getDate()) {
+          events.push({ sub, type: 'renewal' });
+        }
+      }
     }
     return events;
   };
