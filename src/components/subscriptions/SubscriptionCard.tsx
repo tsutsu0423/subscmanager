@@ -67,7 +67,7 @@ export function SubscriptionCard({ sub, onEdit, onDelete }: Props) {
       <div className="flex items-end justify-between">
         <div>
           <p className="text-xl font-bold text-black tracking-tight">{formatCurrency(sub.amount, sub.currency)}</p>
-          <p className="text-xs text-zinc-400 mt-0.5">{sub.billingCycle === 'monthly' ? '月払い' : '年払い'} · {sub.billingDay}日</p>
+          <p className="text-xs text-zinc-400 mt-0.5">{sub.billingCycle === 'monthly' ? '月払い' : '年払い'}</p>
         </div>
         <div className="text-right">
           <p className="text-xs text-zinc-400">月換算</p>

@@ -18,7 +18,6 @@ export function SubscriptionForm({ initial, onSubmit, onClose }: Props) {
     currency: (initial?.currency ?? 'JPY') as Currency,
     category: (initial?.category ?? 'その他') as Category,
     billingCycle: initial?.billingCycle ?? 'monthly',
-    billingDay: initial?.billingDay?.toString() ?? '1',
     startDate: initial?.startDate ?? format(new Date(), 'yyyy-MM-dd'),
     color: initial?.color ?? SUBSCRIPTION_COLORS[0],
     memo: initial?.memo ?? '',
@@ -36,7 +35,6 @@ export function SubscriptionForm({ initial, onSubmit, onClose }: Props) {
       currency: form.currency,
       category: form.category,
       billingCycle: form.billingCycle as 'monthly' | 'yearly',
-      billingDay: parseInt(form.billingDay),
       startDate: form.startDate,
       color: form.color,
       memo: form.memo || undefined,
@@ -93,18 +91,9 @@ export function SubscriptionForm({ initial, onSubmit, onClose }: Props) {
               </select>
             </div>
             <div>
-              <label className="block text-xs font-medium text-zinc-500 mb-1.5">請求日</label>
-              <select value={form.billingDay} onChange={(e) => set('billingDay', e.target.value)} className={inputClass}>
-                {Array.from({ length: 28 }, (_, i) => i + 1).map((d) => (
-                  <option key={d} value={d}>{d}日</option>
-                ))}
-              </select>
+              <label className="block text-xs font-medium text-zinc-500 mb-1.5">開始日</label>
+              <input type="date" value={form.startDate} onChange={(e) => set('startDate', e.target.value)} className={inputClass} />
             </div>
-          </div>
-
-          <div>
-            <label className="block text-xs font-medium text-zinc-500 mb-1.5">開始日</label>
-            <input type="date" value={form.startDate} onChange={(e) => set('startDate', e.target.value)} className={inputClass} />
           </div>
 
           <div>
